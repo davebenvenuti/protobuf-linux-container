@@ -1,0 +1,47 @@
+#!/bin/bash
+
+protoc_flag=false
+if [[ $1 = --protoc ]]; then
+  shift
+  protoc_flag=true
+fi
+
+export RUBYOPT=--yjit-call-threshold=1
+
+p () {
+  p="$1"
+  rb="${1%.proto}_pb.rb"
+  protoc_override=$2
+  use_protoc=$protoc_override || $protoc_flag
+
+  rm -f "$rb"
+
+  if [[ "$use_protoc" == "true" ]]; then
+    echo "$p -> $rb (using google protoc)"
+
+    protoc --ruby_out=. "$p"
+  else
+    echo "$p -> $rb"
+
+    o="$p.bin"
+    [[ -s "$o" ]] && [[ "$p" -ot "$o" ]] || protoc "$p" -o "$o"
+    ruby -I ../protoboeuf/lib ../protoboeuf/exe/protoboeuf -b "$o" > "$rb"
+  fi
+}
+
+cd ${GOOGLE_PROTOBUF_CONTAINER_DIR}
+
+echo "========================= proto -> rb ========================= "
+
+p conformance/conformance.proto
+p conformance/test_protos/test_messages_edition2023.proto
+p src/google/protobuf/test_messages_proto2.proto true
+p src/google/protobuf/test_messages_proto3.proto
+p editions/golden/test_messages_proto2_editions.proto true
+p editions/golden/test_messages_proto3_editions.proto
+
+echo "========================= conformance ========================= "
+
+RUBYLIB=ruby/lib:${SHOPIFY_PROTOBOEUF_CONTAINER_DIR}/lib:.:src:editions/golden ./conformance_test_runner \
+  --failure_list fails.txt \
+  conformance/conformance_ruby.rb 2>&1

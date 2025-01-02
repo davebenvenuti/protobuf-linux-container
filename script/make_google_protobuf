@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd ${GOOGLE_PROTOBUF_CONTAINER_DIR}
+
+cmake --fresh . -Dprotobuf_BUILD_CONFORMANCE=ON && cmake --build .

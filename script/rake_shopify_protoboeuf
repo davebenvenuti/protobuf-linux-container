@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd ${SHOPIFY_PROTOBOEUF_CONTAINER_DIR}
+
+bundle exec rake clobber gen_proto well_known_types
