@@ -1,15 +1,3 @@
 #!/bin/bash
 
-maybe_rm=""
-
-if [[ $1 = "--rm" ]]; then
-  echo "Running with --rm"
-  maybe_rm="--rm"
-  shift
-fi
-
-podman run -it ${maybe_rm} \
-  -v ${GOOGLE_PROTOBUF_HOST_CHECKOUT}:${GOOGLE_PROTOBUF_CONTAINER_DIR} \
-  -v ${SHOPIFY_PROTOBOEUF_HOST_CHECKOUT}:${SHOPIFY_PROTOBOEUF_CONTAINER_DIR} \
-  -v ./script:/home/dev/script \
-  protobuf-linux-container:latest /bin/bash --login
+podman exec -it protobuf-linux-container /bin/bash --login

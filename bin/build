@@ -6,3 +6,18 @@ podman build -t protobuf-linux-container:latest \
   --build-arg PROTOC_VERSION=${PROTOC_VERSION} \
   --build-arg RUBY_VERSION=`cat ${SHOPIFY_PROTOBOEUF_HOST_CHECKOUT}/.ruby-version` \
   .
+
+podman rm -i -f protobuf-linux-container > /dev/null 2>&1
+
+podman create -it ${maybe_rm} \
+  -v ${GOOGLE_PROTOBUF_HOST_CHECKOUT}:${GOOGLE_PROTOBUF_CONTAINER_DIR} \
+  -v ${SHOPIFY_PROTOBOEUF_HOST_CHECKOUT}:${SHOPIFY_PROTOBOEUF_CONTAINER_DIR} \
+  -v ./script:/home/dev/script \
+  --name protobuf-linux-container \
+  protobuf-linux-container:latest
+
+bin/start
+
+echo "===================================================="
+
+podman ps
