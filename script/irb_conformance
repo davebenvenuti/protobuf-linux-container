@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd ${GOOGLE_PROTOBUF_CONTAINER_DIR}
+
+RUBYLIB=ruby/lib:${SHOPIFY_PROTOBOEUF_CONTAINER_DIR}/lib:.:src:editions/golden ruby ~/script/irb_conformance_helper.rb
