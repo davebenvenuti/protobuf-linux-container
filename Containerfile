@@ -59,6 +59,4 @@ WORKDIR /home/dev
 RUN mkdir -p ${GOOGLE_PROTOBUF_CONTAINER_DIR} ${SHOPIFY_PROTOBOEUF_CONTAINER_DIR} /home/dev/script
 ENV PATH "/home/dev/script:${PATH}"
 
-RUN ["bash", "--login", "-c", "gem install syntax_tree"]
-
 CMD ["sleep", "infinity"]

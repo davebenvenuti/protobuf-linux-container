@@ -1,0 +1,3 @@
+#!/bin/bash
+
+gem install syntax_tree irb pry debug
