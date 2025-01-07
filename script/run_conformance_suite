@@ -44,4 +44,4 @@ echo "========================= conformance ========================= "
 
 RUBYLIB=ruby/lib:${SHOPIFY_PROTOBOEUF_CONTAINER_DIR}/lib:.:src:editions/golden ./conformance_test_runner \
   --failure_list fails.txt \
-  conformance/conformance_ruby.rb 2>&1
+  conformance/conformance_ruby.rb 2>&1 | tee conformance.log
